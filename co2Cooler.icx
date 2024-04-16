@@ -1,0 +1,29 @@
+use aliases
+
+alias pumpIn d0
+alias ventOut d1
+alias pipeSense d2
+alias atmoSense d3
+
+pumpIn.On = 0
+pumpIn.Setting = 1
+ventOut.On = 0
+
+main:
+	yield
+	var pipePressure = pipeSense.Pressure
+	var temp = atmoSense.Temperature
+
+	if temp > 300 && pipePressure < 2500
+		pumpIn.On = 1
+	end
+
+	if pipePressure > 5000 || temp < 294
+		pumpIn.On = 0
+		ventOut.On = 1
+	end
+
+	if pipePressure < 5
+		ventOut.On = 0
+	end
+j main

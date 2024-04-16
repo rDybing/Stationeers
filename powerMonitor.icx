@@ -1,0 +1,36 @@
+use constants
+use aliases
+
+alias ledIn d0
+alias ledOut d1
+alias ledCharge d2
+alias sensorIn d3
+alias sensorOut d4
+
+const BATTERIES = -400115994
+
+ledIn.Mode = 2
+ledIn.Color = 2
+ledOut.Mode = 2
+ledOut.Color = 4
+ledCharge.Mode = 1
+ledCharge.Color = 3
+
+var chargeOld = 0.00
+var chargeNew = 0.00
+
+main:
+	yield
+	var power = sensorIn.PowerActual
+	ledIn.Setting = power
+	power = sensorOut.PowerActual
+	ledOut.Setting = power
+	chargeNew = d(BATTERIES).Ratio(Average)
+	if chargeNew > chargeOld
+		ledCharge.Color = 2
+	else
+		ledCharge.Color = 4
+	end
+	chargeOld = chargeNew
+	ledCharge.Setting = chargeNew
+j main

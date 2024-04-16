@@ -1,0 +1,19 @@
+use aliases
+
+alias generator d0
+alias chargeRead d1
+
+var genOn = 0
+
+main:
+	var charge = chargeRead.Setting
+	if charge < 10 && genOn == 0
+		generator.On = 1
+		genOn = 1
+	end
+
+	if charge > 50 && genOn == 1
+		generator.On = 0
+		genOn = 0
+	end
+j main

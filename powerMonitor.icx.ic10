@@ -1,0 +1,34 @@
+alias chargeOld r0
+alias chargeNew r1
+alias power r2
+alias ledIn d0
+alias ledOut d1
+alias ledCharge d2
+alias sensorIn d3
+alias sensorOut d4
+define BATTERIES -400115994
+s ledIn Mode 2
+s ledIn Color 2
+s ledOut Mode 2
+s ledOut Color 4
+s ledCharge Mode 1
+s ledCharge Color 3
+move chargeOld 0
+move chargeNew 0
+main:
+yield
+l power sensorIn PowerActual
+s ledIn Setting power
+l power sensorOut PowerActual
+s ledOut Setting power
+lb chargeNew BATTERIES Ratio Average
+sgt r15 chargeNew chargeOld
+beqz r15 if0else
+s ledCharge Color 2
+j if0exit
+if0else:
+s ledCharge Color 4
+if0exit:
+move chargeOld chargeNew
+s ledCharge Setting chargeNew
+j main

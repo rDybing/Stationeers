@@ -1,0 +1,38 @@
+alias slot0 r0
+alias slot1 r1
+alias color r2
+alias filterO2 d0
+alias filterN d1
+alias ledO2 d3
+alias ledN d4
+
+move slot0 0
+move slot1 0
+
+main:
+	yield
+	ls slot0 filterO2 0 Quantity
+	ls slot1 filterO2 1 Quantity
+	jal getColor
+	s ledO2 Color color
+	ls slot0 filterN 0 Quantity
+	ls slot1 filterN 1 Quantity
+	jal getColor
+	s ledN Color color
+j main
+
+getColor:
+	move color 2			# green
+	slt r13 slot0 0.1
+	slt r12 slot1 0.1
+	or r11 r13 r12
+	beqz r11 if0exit
+		move color 5		# yellow
+	if0exit:
+	seqz r13 slot0
+	seqz r12 slot1
+	and r11 r13 r12
+	beqz r11 if1exit
+		move color 4		# red
+	if1exit:
+j ra

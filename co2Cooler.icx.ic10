@@ -1,0 +1,31 @@
+alias pipePressure r0
+alias temp r1
+alias pumpIn d0
+alias ventOut d1
+alias pipeSense d2
+alias atmoSense d3
+s pumpIn On 0
+s pumpIn Setting 1
+s ventOut On 0
+main:
+yield
+l pipePressure pipeSense Pressure
+l temp atmoSense Temperature
+sgt r15 temp 300
+slt r14 pipePressure 2500
+and r13 r15 r14
+beqz r13 if0exit
+s pumpIn On 1
+if0exit:
+sgt r15 pipePressure 5000
+slt r14 temp 294
+or r13 r15 r14
+beqz r13 if1exit
+s pumpIn On 0
+s ventOut On 1
+if1exit:
+slt r15 pipePressure 5
+beqz r15 if2exit
+s ventOut On 0
+if2exit:
+j main

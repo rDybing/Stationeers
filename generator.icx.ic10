@@ -1,0 +1,22 @@
+alias genOn r0
+alias charge r1
+alias generator d0
+alias chargeRead d1
+move genOn 0
+main:
+l charge chargeRead Setting
+slt r15 charge 10
+seqz r14 genOn
+and r13 r15 r14
+beqz r13 if0exit
+s generator On 1
+move genOn 1
+if0exit:
+sgt r15 charge 50
+seq r14 genOn 1
+and r13 r15 r14
+beqz r13 if1exit
+s generator On 0
+move genOn 0
+if1exit:
+j main

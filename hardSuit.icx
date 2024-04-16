@@ -1,0 +1,24 @@
+use aliases
+
+alias suit db
+alias helmet d0
+
+var press = 0
+
+main:
+	yield
+	press = suit.PressureExternal
+	if press < 75
+		helmet.Open = 0
+		helmet.Lock = 1
+		suit.AirRelease = 1
+		suit.Filtration = 1
+	end
+
+	if press > 80
+		helmet.Lock = 0
+		helmet.Open = 1
+		suit.AirRelease = 0
+		suit.Filtration = 0
+	end
+j main

@@ -1,0 +1,33 @@
+use aliases
+
+alias filterO2 d0
+alias filterN d1
+alias ledO2 d3
+alias ledN d4
+
+var slot0 = 0
+var slot1 = 0
+
+main:
+	yield
+	slot0 = filterO2.Slot(0).Quantity
+	slot1 = filterO2.Slot(1).Quantity
+	var colorO2 = getColor(slot0, slot1)
+	ledO2.Color = colorO2
+	slot0 = filterN.Slot(0).Quantity
+	slot1 = filterN.Slot(1).Quantity
+	var colorN = getColor(slot0, slot1)
+	ledN.Color = colorN
+j main
+
+function getColor(s0, s1)
+	var out = 2
+	if s0 < 0.1 || s1 < 0.1
+		out = 3
+	end
+	if s0 == 0 && s1 == 0
+		out = 3
+	end
+	return out
+end
+	

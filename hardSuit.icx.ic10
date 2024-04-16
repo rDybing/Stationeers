@@ -1,0 +1,22 @@
+alias press r0
+alias suit db
+alias helmet d0
+move press 0
+main:
+yield
+l press suit PressureExternal
+slt r15 press 75
+beqz r15 if0exit
+s helmet Open 0
+s helmet Lock 1
+s suit AirRelease 1
+s suit Filtration 1
+if0exit:
+sgt r15 press 80
+beqz r15 if1exit
+s helmet Lock 0
+s helmet Open 1
+s suit AirRelease 0
+s suit Filtration 0
+if1exit:
+j main
