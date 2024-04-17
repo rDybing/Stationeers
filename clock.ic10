@@ -1,50 +1,20 @@
-alias sensor d0​
-alias display d3
-alias colorDay r4
-alias colorNight r5
-alias colorCurrent r6
-alias lineCurrent r7
-alias time r8
+# Daylight sensor rounded side pointing up
 
-setup:
-	move colorNight 4				# set night color to red
-	move colorDay 2					# set day color to green
+alias sensor d0
+alias hour r10
+alias minute r11
 
-start:
-	l r0 sensor SolarAngle			# read sun-angle
-	bnez r1 20						# if != 0
+define DISPLAY -8155193061
 
-night: 					
-	sub r0 180 r0					# from 180->359 to 0->179
-	div r0 r0 15					# from degrees to percent
-	add r0 r0 1						# from 0 index to 1 index
-	bge r0 7 16
-	trunc r0 r0
-	add r0 r0 6
-	move time r0
-	move colorCurrent colorNight
-	j displaySet
-
-trunc r0 r0
-sub r0 r0 6
-s display Setting r0
-j 2
-
-div r0 r0 15
-add r0 r0 1
-bge r0 7 28
-trunc r0 r0
-add r0 r0 6
-s display Setting r0
-j 2
-
-trunc r0 r0
-sub r0 r0 6
-s display Setting r0
-j 2
-
-displaySet:
-	s display Setting time			# push out the time
-	s display Color colorCurrent	# push out the color
-	yield							# cycle a tick
-	j start							# let's loop again, like we did last summer!
+main:
+	yield
+	l r0 sensor Horizontal
+	add r0 r0 180
+	div r0 r0 15
+	trunc hour r0
+	mod minute r0 1
+	mul minute minute 0.6
+	add r0 hour minute
+	s db Setting r0
+	sbn DISPLAY HASH("clock") Setting r0
+j main
