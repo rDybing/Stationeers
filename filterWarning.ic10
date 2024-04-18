@@ -23,8 +23,8 @@ j main
 
 getColor:
 	move color 2			# green
-	slt r13 slot0 0.1
-	slt r12 slot1 0.1
+	slt r13 slot0 10
+	slt r12 slot1 10
 	or r11 r13 r12
 	beqz r11 if0exit
 		move color 5		# yellow
